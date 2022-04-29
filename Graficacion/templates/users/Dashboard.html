@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      {% load static %}
+      <link rel="stylesheet" type="text/css" href="{% static 'Estilos/Dasboard.css' %}">
+      <title>Dashboard Tarea</title>
+      <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+      <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart','table']});
+        google.charts.setOnLoadCallback(drawChart);
+  
+        function drawChart() {
+          //Tabla 1
+          var data = google.visualization.arrayToDataTable({{values|safe}});
+          var options = {
+            title: {{h_title|safe}} +' vs. '+ {{v_title|safe}},
+            hAxis: {title: {{h_title|safe}}},
+            vAxis: {title: {{v_title|safe}}},
+            curveType: 'function',
+            legend: { position: 'bottom' }
+          };
+          var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+          chart.draw(data, options);
+          
+          //Tabla 2
+          var data2 = google.visualization.arrayToDataTable({{values2|safe}});
+
+          var options2 = {
+            title: {{h_title2|safe}} + " vs " + {{v_title2|safe}},
+            hAxis: {title: {{h_title2|safe}}},
+            vAxis: {title: {{v_title2|safe}}},
+            legend:'none'
+            //seriesType: 'bars',
+            //series: {5: {type: 'line'}}
+          };
+
+          //var chart2 = new google.visualization.ComboChart(document.getElementById('chart_div'));
+          var chart2 = new google.visualization.ScatterChart(document.getElementById('chart_div'));
+          chart2.draw(data2, options2);
+
+
+
+
+        }
+      </script>
+    </head>
+    <body>
+      <h1>Dashboard</h1>
+      <h2>Tabla 1</h2>
+      <p>Esta gráfica representa como es que se relacionan los puntos por juego contra los minutos que se juega</p>
+      <div id="curve_chart" style="width: 900px; height: 500px"></div>
+      <h2>Tabla 2</h2>
+      <p>Esta grafica representa como es que dependiendo el nivel que se este jugando en el momento, el jugador adquiere puntos que se van a comezar a registrar en su perfil  </p>
+      <div id="chart_div" style="width: 900px; height: 500px;"></div>
+    </body>    
+  </html>
+  
